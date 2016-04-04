@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Your Tutor</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_intro">IntroActivity</string>
+    <string name="facebook_app_id">605998069554431</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string>
+</resources>
