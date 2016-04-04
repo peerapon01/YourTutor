@@ -6,16 +6,24 @@
     android:padding="16dp">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="ลงประกาศคอร์ส"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-    <EditText
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:text="ชื่อวิชา/เรื่อง"/>
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ลงประกาศคอร์ส"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_dark"
+            android:layout_gravity="center_horizontal"/>
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="ชื่อวิชา/เรื่อง"/>
+
+    </LinearLayout>
 
 
 </RelativeLayout>
