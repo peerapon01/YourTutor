@@ -72,7 +72,8 @@ CallbackManager callbackManager;
                 Profile profile = Profile.getCurrentProfile();
                 displayMessage(profile);
                 accessToken.getPermissions();
-                startActivity(intent);
+                Log.v("USERID_FB",accessToken.getUserId());
+
 
             }
             @Override
@@ -108,7 +109,9 @@ CallbackManager callbackManager;
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
-    }
+        }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -150,8 +153,9 @@ CallbackManager callbackManager;
         if(profile!=null){
             RoundImageView roundImageView = new RoundImageView(this);
             userDisplay.setText(profile.getName()+" ");
-            Log.v("img",profile.getProfilePictureUri(320,320).toString());
-            Glide.with(this).load(profile.getProfilePictureUri(320,320).toString()).asBitmap().centerCrop().into(new BitmapImageViewTarget(userPic) {
+            String userDisplayString = profile.getProfilePictureUri(320,320).toString();
+            Log.v("img",userDisplayString);
+            Glide.with(this).load(userDisplayString).asBitmap().centerCrop().into(new BitmapImageViewTarget(userPic) {
                 @Override
                 protected void setResource(Bitmap resource) {
                     RoundedBitmapDrawable circularBitmapDrawable =
@@ -161,11 +165,18 @@ CallbackManager callbackManager;
 
                 }
             });
-
+            Log.v("USERID_PROFILE",profile.getId());
+            intent.putExtra("displayPic",userDisplayString);
+            startActivity(intent);
         }
         else{
             userDisplay.setText("Please Log In First");
             Glide.with(this).load(R.mipmap.icon_test_login).into(userPic);
         }
+    }
+    @Override
+    public void onBackPressed()
+    {
+        moveTaskToBack(true);
     }
 }

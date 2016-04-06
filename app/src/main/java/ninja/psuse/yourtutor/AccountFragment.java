@@ -1,12 +1,19 @@
 package ninja.psuse.yourtutor;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,6 +28,7 @@ public class AccountFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private ImageView userPic;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -41,10 +49,10 @@ public class AccountFragment extends Fragment {
      * @return A new instance of fragment AccountFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AccountFragment newInstance() {
+    public static AccountFragment newInstance(String param1) {
         AccountFragment fragment = new AccountFragment();
         Bundle args = new Bundle();
-      //  args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM1, param1);
        // args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -57,13 +65,24 @@ public class AccountFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.fragment_account, container, false);
+        userPic = (ImageView) view.findViewById(R.id.user_pic_account);
+        Glide.with(this).load(mParam1).asBitmap().centerCrop().into(new BitmapImageViewTarget(userPic) {
+            @Override
+            protected void setResource(Bitmap resource) {
+                RoundedBitmapDrawable circularBitmapDrawable =
+                        RoundedBitmapDrawableFactory.create(getResources(), resource);
+                circularBitmapDrawable.setCircular(true);
+                userPic.setImageDrawable(circularBitmapDrawable);
 
+            }
+        });
         return view;
     }
 

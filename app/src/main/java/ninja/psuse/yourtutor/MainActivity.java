@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnMenuTabSelectedListener;
@@ -14,10 +15,15 @@ public class MainActivity extends AppCompatActivity {
     private BottomBar mBottomBar;
     int previousTab;
     private Intent intent;
+    String s;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Bundle b = getIntent().getExtras();
+        s= b.getString("displayPic");
+
+        Log.v("displayfromb",s);
         intent = new Intent(this,MapsActivity.class);
         mBottomBar = BottomBar.attach(this, savedInstanceState);
        previousTab = mBottomBar.getCurrentTabPosition();
@@ -45,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (resId == R.id.bottomBarItemFour) {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.contentContainer,AccountFragment.newInstance())
+                            .replace(R.id.contentContainer,AccountFragment.newInstance(s))
                             .commit();// the user selected item number one
                 }
 
@@ -67,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        moveTaskToBack(true);
 
     }
 
