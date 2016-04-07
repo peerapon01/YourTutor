@@ -28,6 +28,7 @@ import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
+import ninja.psuse.yourtutor.Async.CheckAlreadyHaveThisID;
 import ninja.psuse.yourtutor.Async.RegisterAsyncTask;
 import ninja.psuse.yourtutor.other.RegisterInfo;
 import ninja.psuse.yourtutor.other.RoundImageView;
@@ -172,8 +173,8 @@ CallbackManager callbackManager;
             RegisterInfo registerInfo = new RegisterInfo();
             registerInfo.facebookID=profile.getId();
             registerInfo.facebookName=profile.getName();
-            RegisterAsyncTask registerAsyncTask = new RegisterAsyncTask();
-            registerAsyncTask.execute(registerInfo);
+            CheckAlreadyHaveThisID checkAlreadyHaveThisID = new CheckAlreadyHaveThisID();
+            checkAlreadyHaveThisID.execute(registerInfo);
             startActivity(intent);
         }
         else{
