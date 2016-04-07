@@ -1,6 +1,8 @@
 package ninja.psuse.yourtutor.Async;
 
 import android.os.AsyncTask;
+import android.os.StrictMode;
+import android.util.Log;
 
 import ninja.psuse.yourtutor.other.RegisterInfo;
 import okhttp3.MediaType;
@@ -22,17 +24,21 @@ public class RegisterAsyncTask extends AsyncTask <RegisterInfo,Void,Boolean> {
 
         try
         {
-            MyContact contact = arg0[0];
+            QueryBuilder qb = new QueryBuilder();
+            RegisterInfo contact = arg0[0];
+            String json = qb.createRegisterInfo(contact);
+
 
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder()
-                    .url(url)
+                    .url("https://api.mlab.com/api/1/databases/yourtutor/collections/users?apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR")
                     .post(body)
                     .build();
             Response response = client.newCall(request).execute();
 
-            if(response.)
+            if(response.isSuccessful())
             {
+                Log.v("Successsend","body");
                 return true;
             }
             else
@@ -48,4 +54,4 @@ public class RegisterAsyncTask extends AsyncTask <RegisterInfo,Void,Boolean> {
     }
 
 }
-}
+
