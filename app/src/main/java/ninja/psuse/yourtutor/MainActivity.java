@@ -15,15 +15,16 @@ public class MainActivity extends AppCompatActivity {
     private BottomBar mBottomBar;
     int previousTab;
     private Intent intent;
-    String s;
+    String displayPic;
+    String facebookId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Bundle b = getIntent().getExtras();
-        s= b.getString("displayPic");
-
-        Log.v("displayfromb",s);
+        displayPic = b.getString("displayPic");
+        facebookId = b.getString("facebookId");
+        Log.v("displayfromb",displayPic);
         intent = new Intent(this,MapsActivity.class);
         mBottomBar = BottomBar.attach(this, savedInstanceState);
        previousTab = mBottomBar.getCurrentTabPosition();
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (resId == R.id.bottomBarItemFour) {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.contentContainer,AccountFragment.newInstance(s))
+                            .replace(R.id.contentContainer,AccountFragment.newInstance(displayPic,facebookId))
                             .commit();// the user selected item number one
                 }
 

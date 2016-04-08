@@ -2,11 +2,13 @@ package ninja.psuse.yourtutor;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,15 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import ninja.psuse.yourtutor.other.RegisterInfo;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +35,15 @@ import com.bumptech.glide.request.target.BitmapImageViewTarget;
  * create an instance of this fragment.
  */
 public class AccountFragment extends Fragment {
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    OkHttpClient client = new OkHttpClient();
+    String facebookName;
+    String facebookId;
+    String firstname;
+    String lastname;
+    String mobilenum;
+    String email;
+    String lineid;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -49,11 +69,11 @@ public class AccountFragment extends Fragment {
      * @return A new instance of fragment AccountFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AccountFragment newInstance(String param1) {
+    public static AccountFragment newInstance(String param1,String param2) {
         AccountFragment fragment = new AccountFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-       // args.putString(ARG_PARAM2, param2);
+       args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,6 +103,8 @@ public class AccountFragment extends Fragment {
 
             }
         });
+        getAccountInfo getAccountInfo = new getAccountInfo();
+        getAccountInfo.execute(mParam2);
         return view;
     }
 
@@ -124,4 +146,37 @@ public class AccountFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+    public class getAccountInfo extends AsyncTask<String,Void,Void> {
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                String facebookId = params[0];
+                Request request = new Request.Builder()
+                        .url("https://api.mlab.com/api/1/databases/yourtutor/collections/users?q={\"facebookid\":\"" + facebookId + "\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR")
+                        .build();
+                Log.v("urltest", "https://api.mlab.com/api/1/databases/yourtutor/collections/users?q={\"facebookid\":\"" + facebookId + "\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR");
+                Response response = client.newCall(request).execute();
+                String info = response.body().string();
+                JSONObject jsonInfo = new JSONObject(info);
+                JSONArray jsonArrayInfo = jsonInfo.getJSONArray("");
+
+               for(int i=0;i<jsonArrayInfo.length();i++){
+                   JSONObject jsonObject = jsonArrayInfo.getJSONObject(i);
+                   firstname = jsonObject.getString("firstname");
+
+               }
+                Log.v("accountinfo",info);
+                return null;
+            }
+            catch (Exception e){
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+    }
+
 }

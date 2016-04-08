@@ -1,7 +1,9 @@
 package ninja.psuse.yourtutor;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
@@ -29,9 +31,15 @@ import com.facebook.login.widget.LoginButton;
 import java.util.Arrays;
 
 import ninja.psuse.yourtutor.Async.CheckAlreadyHaveThisID;
+import ninja.psuse.yourtutor.Async.QueryBuilder;
 import ninja.psuse.yourtutor.Async.RegisterAsyncTask;
 import ninja.psuse.yourtutor.other.RegisterInfo;
 import ninja.psuse.yourtutor.other.RoundImageView;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class LogInActivity extends ActionBarActivity {
@@ -42,10 +50,16 @@ CallbackManager callbackManager;
     private TextView userDisplay;
     private LoginButton loginButton;
     private ImageView userPic;
+    private Intent intent2;
+    ProgressDialog pDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         intent = new Intent(this,MainActivity.class);
+        intent2 = new Intent(this,Register.class);
+        pDialog = new ProgressDialog(this);
+        pDialog.setCancelable(false);
+        pDialog.setCanceledOnTouchOutside(false);
         FacebookSdk.sdkInitialize(this.getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
         setContentView(R.layout.activity_login);
@@ -170,12 +184,22 @@ CallbackManager callbackManager;
             });
             Log.v("USERID_PROFILE",profile.getId());
             intent.putExtra("displayPic",userDisplayString);
+            intent2.putExtra("displayPic",userDisplayString);
+
             RegisterInfo registerInfo = new RegisterInfo();
-            registerInfo.facebookID=profile.getId();
-            registerInfo.facebookName=profile.getName();
+
+            String facebookId = profile.getId();
+            registerInfo.facebookID=facebookId;
+            String facebookName = profile.getName();
+            registerInfo.facebookName=facebookName;
+            intent2.putExtra("facebookId",facebookId);
+            intent2.putExtra("facebookName",facebookName);
+            intent.putExtra("facebookId",facebookId);
+            intent.putExtra("facebookName",facebookName);
+
             CheckAlreadyHaveThisID checkAlreadyHaveThisID = new CheckAlreadyHaveThisID();
             checkAlreadyHaveThisID.execute(registerInfo);
-            startActivity(intent);
+
         }
         else{
             userDisplay.setText("Please Log In First");
@@ -187,4 +211,78 @@ CallbackManager callbackManager;
     {
         moveTaskToBack(true);
     }
-}
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    public class CheckAlreadyHaveThisID extends AsyncTask<RegisterInfo,Void,String> {
+
+        OkHttpClient client = new OkHttpClient();
+        @Override
+        protected void onPreExecute() {
+            pDialog.setMessage("Loading Data.. Please Wait.");
+            pDialog.show();
+            super.onPreExecute();
+        }
+        protected String doInBackground(RegisterInfo... arg0) {
+            try {
+                QueryBuilder qb = new QueryBuilder();
+                RegisterInfo contact = arg0[0];
+                String facebookId = contact.facebookID;
+                Request request = new Request.Builder()
+                        .url("https://api.mlab.com/api/1/databases/yourtutor/collections/users?q={\"facebookid\":\"" + facebookId + "\"}&c=true&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR")
+                        .build();
+                Log.v("urltest", "https://api.mlab.com/api/1/databases/yourtutor/collections/users?q={\"facebookid\":\"" + facebookId + "\"}&c=true&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR");
+                Response response = client.newCall(request).execute();
+                String check=response.body().string();
+                Log.v("response",check);
+                return check;
+
+
+           /* if(response.body().string().equals(0)){
+                Log.v("test","eiei");
+                String json = qb.createRegisterInfo(contact);
+                RequestBody body = RequestBody.create(JSON, json);
+                Request request2 = new Request.Builder()
+                        .url("https://api.mlab.com/api/1/databases/yourtutor/collections/users?apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR")
+                        .post(body)
+                        .build();
+                Response response2 = client.newCall(request2).execute();
+
+                if(response2.isSuccessful())
+                {
+                    Log.v("Successsend","body");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }*/
+            } catch (Exception e) {
+                String val = e.getMessage();
+                String val2 = val;
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String aString) {
+            super.onPostExecute(aString);
+
+            Log.v("StringCheck",aString);
+
+            pDialog.dismiss();
+            launchRegisterActivity(aString);
+        }
+        protected void launchRegisterActivity(String aString){
+            if(aString.equals("0")){
+                startActivity(intent2);
+            }
+            else{
+                startActivity(intent);
+            }
+        }
+    }
+    }
