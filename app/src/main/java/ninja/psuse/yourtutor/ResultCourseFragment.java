@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,8 @@ import com.dexafree.materialList.view.MaterialListView;
 import com.squareup.picasso.RequestCreator;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -30,6 +33,15 @@ import org.json.JSONArray;
  * create an instance of this fragment.
  */
 public class ResultCourseFragment extends Fragment {
+    String category;
+    String author;
+    String subject;
+    String level;
+    String location;
+    String school;
+    String priceperHr;
+    String description;
+    String status;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,7 +71,7 @@ public class ResultCourseFragment extends Fragment {
         Bundle args = new Bundle();
         String json1 = param1.toString();
       args.putString(ARG_PARAM1,json1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM2,param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -79,44 +91,66 @@ public class ResultCourseFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_result_course, container, false);
         MaterialListView mListView = (MaterialListView) view.findViewById(R.id.material_listview);
-        for(int i=0;i<2;i++) {
-            Card card = new Card.Builder(getActivity())
-                    .withProvider(new CardProvider())
-                    .setLayout(R.layout.material_basic_image_buttons_card_layout)
-                    .setTitle("Card number 3")
-                    .setTitleGravity(Gravity.END)
-                    .setDescription("Lorem ipsum dolor sit amet")
-                    .setDescriptionGravity(Gravity.END)
-                    .setDrawable(R.drawable.ic_account_circle_white_24dp)
-                    .setDrawableConfiguration(new CardProvider.OnImageConfigListener() {
-                        @Override
-                        public void onImageConfigure(@NonNull RequestCreator requestCreator) {
-                            requestCreator.fit();
-                        }
-                    })
-                    .addAction(R.id.left_text_button, new TextViewAction(getActivity())
-                            .setText("Izquierda")
-                            .setTextResourceColor(R.color.black_button)
-                            .setListener(new OnActionClickListener() {
-                                @Override
-                                public void onActionClicked(View view, Card card) {
-                                    Toast.makeText(getActivity(), "You have pressed the left button", Toast.LENGTH_SHORT).show();
-                                    card.getProvider().setTitle("CHANGED ON RUNTIME");
-                                }
-                            }))
-                    .addAction(R.id.right_text_button, new TextViewAction(getActivity())
-                            .setText("Derecha")
-                            .setTextResourceColor(R.color.orange_button)
-                            .setListener(new OnActionClickListener() {
-                                @Override
-                                public void onActionClicked(View view, Card card) {
-                                    Toast.makeText(getActivity(), "You have pressed the right button on card " + card.getProvider().getTitle(), Toast.LENGTH_SHORT).show();
-                                    card.dismiss();
-                                }
-                            }))
-                    .endConfig()
-                    .build();
-            mListView.getAdapter().add(card);
+        try {
+            JSONArray jsonInfo = new JSONArray(mParam1);
+            for (int i = 0; i < jsonInfo.length(); i++) {
+                JSONObject jsonObject = jsonInfo.getJSONObject(i);
+                category = jsonObject.getString("category");
+                author = jsonObject.getString("author");
+                subject = jsonObject.getString("subject");
+                level = jsonObject.getString("level");
+                location = jsonObject.getString("location");
+                school = jsonObject.getString("school");
+                description = jsonObject.getString("description");
+                status = jsonObject.getString("status");
+                priceperHr = jsonObject.getString("priceperHr");
+                Log.v("subject", subject);
+                Card card = new Card.Builder(getActivity())
+                        .withProvider(new CardProvider())
+
+                        .setLayout(R.layout.material_basic_image_buttons_card_layout)
+                        .setTitle(subject)
+                        .setTitleGravity(Gravity.END)
+                        .setDescription(author+" "+description+" "+level+" "+location +" "+ school +" " + status+ " " + priceperHr)
+                        .setDescriptionGravity(Gravity.END)
+                        .setDrawable(R.drawable.ic_account_circle_white_24dp)
+                        .setDrawableConfiguration(new CardProvider.OnImageConfigListener() {
+                            @Override
+                            public void onImageConfigure(@NonNull RequestCreator requestCreator) {
+                                requestCreator.fit();
+                            }
+                        })
+                        .addAction(R.id.left_text_button, new TextViewAction(getActivity())
+
+                                .setText("ยกเลิก")
+                                .setTextResourceColor(R.color.black_button)
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        card.setDismissible(true);
+                                        Toast.makeText(getActivity(), "You have pressed the left button", Toast.LENGTH_SHORT).show();
+                                        card.dismiss();
+
+                                    }
+                                }))
+                        .addAction(R.id.right_text_button, new TextViewAction(getActivity())
+                                .setText("รับงาน")
+                                .setTextResourceColor(R.color.orange_button)
+                                .setListener(new OnActionClickListener() {
+                                    @Override
+                                    public void onActionClicked(View view, Card card) {
+                                        Toast.makeText(getActivity(), "You have pressed the right button on card " + card.getProvider().getTitle(), Toast.LENGTH_SHORT).show();
+                                        card.dismiss();
+                                    }
+                                }))
+                        .endConfig()
+                        .build();
+                mListView.getAdapter().add(card);
+            }
+
+        }
+        catch (JSONException    e){
+            Log.e("ErrorJSon",e.getMessage());
         }
 
         return view;

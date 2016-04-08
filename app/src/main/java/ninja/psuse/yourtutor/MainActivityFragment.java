@@ -263,7 +263,7 @@ public class MainActivityFragment extends Fragment {
         protected void onPostExecute(JSONArray jsonInfo) {
             super.onPostExecute(jsonInfo);
             getFragmentManager().beginTransaction()
-                    .add(R.id.contentContainer,ResultCourseFragment.newInstance(jsonInfo,mParam2))
+                    .replace(R.id.contentContainer,ResultCourseFragment.newInstance(jsonInfo,mParam2))
                     .commit();
 
         }
