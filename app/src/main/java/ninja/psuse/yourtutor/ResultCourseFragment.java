@@ -18,6 +18,8 @@ import com.dexafree.materialList.card.action.TextViewAction;
 import com.dexafree.materialList.view.MaterialListView;
 import com.squareup.picasso.RequestCreator;
 
+import org.json.JSONArray;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -52,11 +54,12 @@ public class ResultCourseFragment extends Fragment {
      * @return A new instance of fragment ResultCourseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ResultCourseFragment newInstance() {
+    public static ResultCourseFragment newInstance(JSONArray param1,String param2) {
         ResultCourseFragment fragment = new ResultCourseFragment();
         Bundle args = new Bundle();
-      //  args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
+        String json1 = param1.toString();
+      args.putString(ARG_PARAM1,json1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }

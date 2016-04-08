@@ -113,7 +113,10 @@ public class CourseFragment extends Fragment {
                 courseInfo.description=description.getText().toString();
                 courseInfo.school=school.getText().toString();
                 courseInfo.subject=subject.getText().toString();
-                courseInfo.priceperHr=priceperHr.getText().toString();
+
+                    courseInfo.priceperHr=priceperHr.getText().toString();
+
+
                 courseInfo.status="Not Yet";
                 courseInfo.reservedBy="Not Yet";
                 ClassifyCourseAsyncTask classifyCourseAsyncTask = new ClassifyCourseAsyncTask();
