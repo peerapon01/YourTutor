@@ -10,8 +10,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
+
+import ninja.psuse.yourtutor.Async.ResultedCourseAsyncTask;
+import ninja.psuse.yourtutor.other.CourseInfo;
 
 
 /**
@@ -23,7 +27,7 @@ import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
  * create an instance of this fragment.
  */
 public class MainActivityFragment extends Fragment {
-
+    android.support.v7.widget.AppCompatEditText priceperHr;
     Button searchButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -49,11 +53,11 @@ public class MainActivityFragment extends Fragment {
      * @return A new instance of fragment MainActivityFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MainActivityFragment newInstance() {
+    public static MainActivityFragment newInstance(String param1,String param2) {
         MainActivityFragment fragment = new MainActivityFragment();
         Bundle args = new Bundle();
-        // args.putString(ARG_PARAM1, param1);
-        //args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -78,23 +82,38 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_activity, container, false);
+        priceperHr = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.findpriceper_hr);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_dropdown_item_1line, COUNTRIES);
-        MaterialBetterSpinner textView = (MaterialBetterSpinner)
-                view.findViewById(R.id.spinner1);
-        textView.setAdapter(adapter);
-        searchButton = (Button) view.findViewById(R.id.search);
+                android.R.layout.simple_dropdown_item_1line, LEVEL);
+        final MaterialBetterSpinner level = (MaterialBetterSpinner)
+                view.findViewById(R.id.spinnerFindLevel);
+        level.setAdapter(adapter);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_dropdown_item_1line, CATEGORY);
+        final MaterialBetterSpinner category = (MaterialBetterSpinner)
+                view.findViewById(R.id.spinnerFindLevel);
+        category.setAdapter(adapter);
+
+        searchButton = (Button) view.findViewById(R.id.searchCourse);
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getFragmentManager().beginTransaction()
-                        .replace(R.id.contentContainer,ResultCourseFragment.newInstance())
-                        .addToBackStack(null).commit();
+                CourseInfo courseInfo = new CourseInfo();
+                courseInfo.category=category.getText().toString();
+                courseInfo.level=level.getText().toString();
+                courseInfo.priceperHr=priceperHr.getText().toString();
+                ResultedCourseAsyncTask resultedCourseAsyncTask = new ResultedCourseAsyncTask();
+                resultedCourseAsyncTask.execute(courseInfo);
             }
         });
         return view;
     }
-
+    private static final String[] LEVEL = new String[] {
+            "ไม่ระบุ","ป1","ป2","ป3","ป4","ป5","ป6","ม1","ม2","ม3","ม4","ม5","ม6","มหาวิทยาลัย"
+    };
+    private static final String[] CATEGORY = new String[] {
+            "ไม่ระบุ","คณิตศาสตร์","วิทยาศาสตร์ทั่วไป","ฟิสิกส์","เคมี","ชีวะ","ภาษาอังกฤษ","ภาษาไทย","สังคม","อื่นๆ"
+    };
     /*// TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

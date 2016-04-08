@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     private Intent intent;
     String displayPic;
     String facebookId;
+    String facebookName;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         Bundle b = getIntent().getExtras();
         displayPic = b.getString("displayPic");
         facebookId = b.getString("facebookId");
+        facebookName = b.getString("facebookName");
         Log.v("displayfromb",displayPic);
         intent = new Intent(this,MapsActivity.class);
         mBottomBar = BottomBar.attach(this, savedInstanceState);
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
                 if (resId == R.id.bottomBarItemOne) {
 
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.contentContainer,MainActivityFragment.newInstance())
+                            .replace(R.id.contentContainer,MainActivityFragment.newInstance(facebookId,facebookName))
                             .commit();
 
                 }
@@ -47,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (resId == R.id.bottomBarItemThree) {
                     getSupportFragmentManager().beginTransaction()
-                            .replace(R.id.contentContainer,CourseFragment.newInstance())
+                            .replace(R.id.contentContainer,CourseFragment.newInstance(facebookId,facebookName))
                             .commit();
                 }
                 if (resId == R.id.bottomBarItemFour) {
@@ -63,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         mBottomBar.mapColorForTab(2, "#7B1FA2");
         mBottomBar.mapColorForTab(3, "#FF5252");
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.contentContainer,MainActivityFragment.newInstance(),"Defualt Fragment")
+          getSupportFragmentManager().beginTransaction()
+                    .add(R.id.contentContainer,MainActivityFragment.newInstance(facebookId,facebookName),"Defualt Fragment")
                     .commit();
         }
 

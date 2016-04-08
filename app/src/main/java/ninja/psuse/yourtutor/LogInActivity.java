@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
@@ -52,6 +53,7 @@ CallbackManager callbackManager;
     private ImageView userPic;
     private Intent intent2;
     ProgressDialog pDialog;
+    VideoView videoView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,6 +68,7 @@ CallbackManager callbackManager;
         userPic = (ImageView) this.findViewById(R.id.user_pic);
         userDisplay = (TextView) this.findViewById(R.id.username);
         loginButton = (LoginButton) this.findViewById(R.id.login_button);
+        videoView = (VideoView) this.findViewById(R.id.videoView);
         loginButton.setReadPermissions(Arrays.asList("user_friends","public_profile","email"));
 
 
@@ -196,6 +199,7 @@ CallbackManager callbackManager;
             intent2.putExtra("facebookName",facebookName);
             intent.putExtra("facebookId",facebookId);
             intent.putExtra("facebookName",facebookName);
+
 
             CheckAlreadyHaveThisID checkAlreadyHaveThisID = new CheckAlreadyHaveThisID();
             checkAlreadyHaveThisID.execute(registerInfo);

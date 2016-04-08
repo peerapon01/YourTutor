@@ -9,37 +9,44 @@
     <!-- TODO: Update blank fragment layout -->
 
     <LinearLayout
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="หาคอร์ส"
-            android:textSize="20sp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="วิชา"/>
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:hint="ใส่ชื่อวิชาคร่าวๆ (เว้นว่างหากไม่ระบุ)"/>
+            android:text="ค้นหาคอร์ส"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/background_dark"
+            android:layout_gravity="center_horizontal"/>
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-            android:id="@+id/spinner1"
+            android:id="@+id/spinnerFindCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="เลือกช่วงชั้น"
+            android:hint="หมวดวิชา"
+
             app:met_floatingLabel="normal" />
 
-        <Button
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/spinnerFindLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="ค้นหา"
-            android:id="@+id/search"/>
+            android:hint="ระดับชั้น"
+            app:met_floatingLabel="normal"/>
+
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/findpriceper_hr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="ราคา/ชั่วโมง(THB) ที่ต้องการ (>=)"/>
+
+        <Button
+            android:id="@+id/searchCourse"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ค้นหา"/>
 
     </LinearLayout>
 

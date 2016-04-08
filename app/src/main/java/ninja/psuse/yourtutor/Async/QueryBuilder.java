@@ -1,5 +1,6 @@
 package ninja.psuse.yourtutor.Async;
 
+import ninja.psuse.yourtutor.other.CourseInfo;
 import ninja.psuse.yourtutor.other.RegisterInfo;
 
 /**
@@ -25,5 +26,18 @@ public class QueryBuilder {
                         contact.firstname, contact.lastname, contact.email, contact.mobilenum,contact.facebookID,
                         contact.lineid,contact.facebookName);
     }
+    public String createCourseInfo(CourseInfo course)
+    {
+        return String
+                .format("{\"category\": \"%s\",\"author\":\"%s\","
+                                + "\"reservedBy\": \"%s\","
+                                + "\"subject\": \"%s\", \"level\": \"%s\", "
+                                + "\"location\": \"%s\",\"school\":\"%s\","
+                                +"\"priceperHr\": \"%s\",\"description\":\"%s\","
+                                +"\"status\": \"%s\",\"facebookID\":\"%s\"}",
+                        course.category,course.author,course.reservedBy,course.subject,course.level,course.location,course.school,course.priceperHr,
+                        course.description,course.status,course.authorfacebookID);
+    }
+
 
 }

@@ -13,12 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.BitmapImageViewTarget;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.IOException;
 
 import ninja.psuse.yourtutor.other.RegisterInfo;
 import okhttp3.MediaType;
@@ -44,6 +48,7 @@ public class AccountFragment extends Fragment {
     String mobilenum;
     String email;
     String lineid;
+    TextView accountInfo;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -103,6 +108,8 @@ public class AccountFragment extends Fragment {
 
             }
         });
+        accountInfo = (TextView) view.findViewById(R.id.infoTest);
+
         getAccountInfo getAccountInfo = new getAccountInfo();
         getAccountInfo.execute(mParam2);
         return view;
@@ -157,25 +164,39 @@ public class AccountFragment extends Fragment {
                 Log.v("urltest", "https://api.mlab.com/api/1/databases/yourtutor/collections/users?q={\"facebookid\":\"" + facebookId + "\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR");
                 Response response = client.newCall(request).execute();
                 String info = response.body().string();
-                JSONObject jsonInfo = new JSONObject(info);
-                JSONArray jsonArrayInfo = jsonInfo.getJSONArray("");
-
-               for(int i=0;i<jsonArrayInfo.length();i++){
-                   JSONObject jsonObject = jsonArrayInfo.getJSONObject(i);
-                   firstname = jsonObject.getString("firstname");
-
-               }
                 Log.v("accountinfo",info);
-                return null;
+                JSONArray jsonInfo = new JSONArray(info);
+
+
+for(int i=0;i<jsonInfo.length();i++) {
+    JSONObject jsonObject = jsonInfo.getJSONObject(i);
+    firstname = jsonObject.getString("first_name");
+    lastname = jsonObject.getString("last_name");
+    email = jsonObject.getString("email");
+    mobilenum = jsonObject.getString("phone");
+    lineid = jsonObject.getString("lineid");
+    facebookName = jsonObject.getString("facebookname");
+}
+
+
+               } catch (JSONException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+
             }
+
+
             catch (Exception e){
                 return null;
             }
+            return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+            accountInfo.setText(firstname+lastname+facebookName+lineid+mobilenum+email);
         }
     }
 
