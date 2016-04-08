@@ -58,10 +58,10 @@ public class CourseFragment extends Fragment {
      * @return A new instance of fragment CourseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static CourseFragment newInstance(String param1,String param2) {
+    public static CourseFragment newInstance(String param1, String param2) {
         CourseFragment fragment = new CourseFragment();
         Bundle args = new Bundle();
-       args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -79,7 +79,7 @@ public class CourseFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_course, container, false);
+        View view = inflater.inflate(R.layout.fragment_course, container, false);
         subject = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.subject);
         location = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.location);
         priceperHr = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.priceper_hr);
@@ -104,21 +104,18 @@ public class CourseFragment extends Fragment {
             public void onClick(View v) {
 
                 CourseInfo courseInfo = new CourseInfo();
-                courseInfo.author=facebookName;
-                courseInfo.authorfacebookID=facebookId;
-                courseInfo.category=textView2.getText().toString();
-                courseInfo.description=description.getText().toString();
-                courseInfo.level=textView.getText().toString();
-                courseInfo.location=location.getText().toString();
-                courseInfo.description=description.getText().toString();
-                courseInfo.school=school.getText().toString();
-                courseInfo.subject=subject.getText().toString();
-
-                    courseInfo.priceperHr=priceperHr.getText().toString();
-
-
-                courseInfo.status="Not Yet";
-                courseInfo.reservedBy="Not Yet";
+                courseInfo.author = facebookName;
+                courseInfo.authorfacebookID = facebookId;
+                courseInfo.category = textView2.getText().toString();
+                courseInfo.description = description.getText().toString();
+                courseInfo.level = textView.getText().toString();
+                courseInfo.location = location.getText().toString();
+                courseInfo.description = description.getText().toString();
+                courseInfo.school = school.getText().toString();
+                courseInfo.subject = subject.getText().toString();
+                courseInfo.priceperHr = priceperHr.getText().toString();
+                courseInfo.status = "Not Yet";
+                courseInfo.reservedBy = "Not Yet";
                 ClassifyCourseAsyncTask classifyCourseAsyncTask = new ClassifyCourseAsyncTask();
                 classifyCourseAsyncTask.execute(courseInfo);
 
@@ -126,16 +123,14 @@ public class CourseFragment extends Fragment {
         });
 
 
-
-
-
         return view;
     }
-    private static final String[] LEVEL = new String[] {
-            "ป1","ป2","ป3","ป4","ป5","ป6","ม1","ม2","ม3","ม4","ม5","ม6","มหาวิทยาลัย"
+
+    private static final String[] LEVEL = new String[]{
+            "ป1", "ป2", "ป3", "ป4", "ป5", "ป6", "ม1", "ม2", "ม3", "ม4", "ม5", "ม6", "มหาวิทยาลัย"
     };
-    private static final String[] CATEGORY = new String[] {
-           "คณิตศาสตร์","วิทยาศาสตร์ทั่วไป","ฟิสิกส์","เคมี","ชีวะ","ภาษาอังกฤษ","ภาษาไทย","สังคม","อื่นๆ"
+    private static final String[] CATEGORY = new String[]{
+            "คณิตศาสตร์", "วิทยาศาสตร์ทั่วไป", "ฟิสิกส์", "เคมี", "ชีวะ", "ภาษาอังกฤษ", "ภาษาไทย", "สังคม", "อื่นๆ"
     };
 
 

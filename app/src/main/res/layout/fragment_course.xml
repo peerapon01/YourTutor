@@ -1,24 +1,26 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="ninja.psuse.yourtutor.CourseFragment"
-    android:padding="16dp">
+    android:padding="16dp"
+    tools:context="ninja.psuse.yourtutor.CourseFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:text="ลงประกาศคอร์ส"
-            android:textSize="20sp"
-            android:textStyle="bold"
             android:textColor="@android:color/background_dark"
-            android:layout_gravity="center_horizontal"/>
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/spinnerCategory"
             android:layout_width="wrap_content"
@@ -26,43 +28,49 @@
             android:hint="หมวดวิชา"
 
             app:met_floatingLabel="normal" />
+
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/subject"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="ชื่องานรวมๆ(เช่น คณิตศาสตร์ มสาม)"/>
+            android:hint="ชื่องานรวมๆ(เช่น คณิตศาสตร์ มสาม)" />
+
         <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
             android:id="@+id/spinnerLevel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="ระดับชั้น"
-            app:met_floatingLabel="normal"/>
+            app:met_floatingLabel="normal" />
+
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="สถานที่เรียน"/>
+            android:hint="สถานที่เรียน" />
+
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/school"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="สถานที่ศึกษา"/>
+            android:hint="สถานที่ศึกษา" />
+
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/priceper_hr"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="ราคา/ชั่วโมง(THB)"/>
+            android:hint="ราคา/ชั่วโมง(THB)" />
+
         <android.support.v7.widget.AppCompatEditText
             android:id="@+id/description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="คำอธิบายเพิ่มเติม"
-            />
+            android:hint="คำอธิบายเพิ่มเติม" />
+
         <Button
             android:id="@+id/confirmClassify"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="ลงประกาศ"/>
+            android:text="ลงประกาศ" />
 
     </LinearLayout>
 

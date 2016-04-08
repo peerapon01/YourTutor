@@ -14,7 +14,7 @@ import okhttp3.Response;
 /**
  * Created by peerapon01 on 4/8/16 AD.
  */
-public class ClassifyCourseAsyncTask extends AsyncTask<CourseInfo,Void,Boolean> {
+public class ClassifyCourseAsyncTask extends AsyncTask<CourseInfo, Void, Boolean> {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     OkHttpClient client = new OkHttpClient();
@@ -22,8 +22,7 @@ public class ClassifyCourseAsyncTask extends AsyncTask<CourseInfo,Void,Boolean> 
 
     protected Boolean doInBackground(CourseInfo... params) {
 
-        try
-        {
+        try {
             QueryBuilder qb = new QueryBuilder();
             CourseInfo course = params[0];
             String json = qb.createCourseInfo(course);
@@ -36,13 +35,10 @@ public class ClassifyCourseAsyncTask extends AsyncTask<CourseInfo,Void,Boolean> 
                     .build();
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful())
-            {
-                Log.v("Successsend","body");
+            if (response.isSuccessful()) {
+                Log.v("Successsend", "body");
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         } catch (Exception e) {

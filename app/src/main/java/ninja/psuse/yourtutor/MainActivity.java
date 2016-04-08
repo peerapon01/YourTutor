@@ -65,8 +65,8 @@ public class MainActivity extends AppCompatActivity {
         mBottomBar.mapColorForTab(2, "#7B1FA2");
         mBottomBar.mapColorForTab(3, "#FF5252");
         if(savedInstanceState==null){
-          getSupportFragmentManager().beginTransaction()
-                    .add(R.id.contentContainer,MainActivityFragment.newInstance(facebookId,facebookName),"Defualt Fragment")
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.contentContainer, MainActivityFragment.newInstance(facebookId, facebookName), "Defualt Fragment")
                     .commit();
         }
 

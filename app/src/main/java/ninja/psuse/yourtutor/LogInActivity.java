@@ -44,7 +44,7 @@ import okhttp3.Response;
 
 
 public class LogInActivity extends ActionBarActivity {
-CallbackManager callbackManager;
+    CallbackManager callbackManager;
     private Intent intent;
     private ProfileTracker profileTracker;
     private AccessTokenTracker accessTokenTracker;
@@ -54,11 +54,12 @@ CallbackManager callbackManager;
     private Intent intent2;
     ProgressDialog pDialog;
     VideoView videoView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        intent = new Intent(this,MainActivity.class);
-        intent2 = new Intent(this,Register.class);
+        intent = new Intent(this, MainActivity.class);
+        intent2 = new Intent(this, Register.class);
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
         pDialog.setCanceledOnTouchOutside(false);
@@ -69,7 +70,7 @@ CallbackManager callbackManager;
         userDisplay = (TextView) this.findViewById(R.id.username);
         loginButton = (LoginButton) this.findViewById(R.id.login_button);
         videoView = (VideoView) this.findViewById(R.id.videoView);
-        loginButton.setReadPermissions(Arrays.asList("user_friends","public_profile","email"));
+        loginButton.setReadPermissions(Arrays.asList("user_friends", "public_profile", "email"));
 
 
         // If using in a fragment
@@ -92,10 +93,11 @@ CallbackManager callbackManager;
                 Profile profile = Profile.getCurrentProfile();
                 displayMessage(profile);
                 accessToken.getPermissions();
-                Log.v("USERID_FB",accessToken.getUserId());
+                Log.v("USERID_FB", accessToken.getUserId());
 
 
             }
+
             @Override
             public void onCancel() {
                 // App code
@@ -106,7 +108,7 @@ CallbackManager callbackManager;
                 // App code
             }
         });
-        accessTokenTracker= new AccessTokenTracker() {
+        accessTokenTracker = new AccessTokenTracker() {
             @Override
             protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
 
@@ -129,7 +131,7 @@ CallbackManager callbackManager;
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
 
-        }
+    }
 
 
     @Override
@@ -153,28 +155,32 @@ CallbackManager callbackManager;
 
         return super.onOptionsItemSelected(item);
     }
+
     public void onResume() {
         super.onResume();
         AppEventsLogger.activateApp(this);
         Profile profile = Profile.getCurrentProfile();
         displayMessage(profile);
     }
+
     protected void onPause() {
         super.onPause();
         AppEventsLogger.deactivateApp(this);
     }
+
     public void onStop() {
         super.onStop();
         accessTokenTracker.stopTracking();
         profileTracker.stopTracking();
     }
-    public void displayMessage(Profile profile){
 
-        if(profile!=null){
+    public void displayMessage(Profile profile) {
+
+        if (profile != null) {
             RoundImageView roundImageView = new RoundImageView(this);
-            userDisplay.setText(profile.getName()+" ");
-            String userDisplayString = profile.getProfilePictureUri(320,320).toString();
-            Log.v("img",userDisplayString);
+            userDisplay.setText(profile.getName() + " ");
+            String userDisplayString = profile.getProfilePictureUri(320, 320).toString();
+            Log.v("img", userDisplayString);
             Glide.with(this).load(userDisplayString).asBitmap().centerCrop().into(new BitmapImageViewTarget(userPic) {
                 @Override
                 protected void setResource(Bitmap resource) {
@@ -185,46 +191,49 @@ CallbackManager callbackManager;
 
                 }
             });
-            Log.v("USERID_PROFILE",profile.getId());
-            intent.putExtra("displayPic",userDisplayString);
-            intent2.putExtra("displayPic",userDisplayString);
+            Log.v("USERID_PROFILE", profile.getId());
+            intent.putExtra("displayPic", userDisplayString);
+            intent2.putExtra("displayPic", userDisplayString);
 
             RegisterInfo registerInfo = new RegisterInfo();
 
             String facebookId = profile.getId();
-            registerInfo.facebookID=facebookId;
+            registerInfo.facebookID = facebookId;
             String facebookName = profile.getName();
-            registerInfo.facebookName=facebookName;
-            intent2.putExtra("facebookId",facebookId);
-            intent2.putExtra("facebookName",facebookName);
-            intent.putExtra("facebookId",facebookId);
-            intent.putExtra("facebookName",facebookName);
+            registerInfo.facebookName = facebookName;
+            intent2.putExtra("facebookId", facebookId);
+            intent2.putExtra("facebookName", facebookName);
+            intent.putExtra("facebookId", facebookId);
+            intent.putExtra("facebookName", facebookName);
 
 
             CheckAlreadyHaveThisID checkAlreadyHaveThisID = new CheckAlreadyHaveThisID();
             checkAlreadyHaveThisID.execute(registerInfo);
 
-        }
-        else{
+        } else {
             userDisplay.setText("Please Log In First");
             Glide.with(this).load(R.mipmap.icon_test_login).into(userPic);
         }
     }
+
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         moveTaskToBack(true);
     }
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    public class CheckAlreadyHaveThisID extends AsyncTask<RegisterInfo,Void,String> {
+
+    public class CheckAlreadyHaveThisID extends AsyncTask<RegisterInfo, Void, String> {
 
         OkHttpClient client = new OkHttpClient();
+
         @Override
         protected void onPreExecute() {
             pDialog.setMessage("Loading Data.. Please Wait.");
             pDialog.show();
             super.onPreExecute();
         }
+
         protected String doInBackground(RegisterInfo... arg0) {
             try {
                 QueryBuilder qb = new QueryBuilder();
@@ -235,8 +244,8 @@ CallbackManager callbackManager;
                         .build();
                 Log.v("urltest", "https://api.mlab.com/api/1/databases/yourtutor/collections/users?q={\"facebookid\":\"" + facebookId + "\"}&c=true&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR");
                 Response response = client.newCall(request).execute();
-                String check=response.body().string();
-                Log.v("response",check);
+                String check = response.body().string();
+                Log.v("response", check);
                 return check;
 
 
@@ -275,18 +284,18 @@ CallbackManager callbackManager;
         protected void onPostExecute(String aString) {
             super.onPostExecute(aString);
 
-            Log.v("StringCheck",aString);
+            Log.v("StringCheck", aString);
 
             pDialog.dismiss();
             launchRegisterActivity(aString);
         }
-        protected void launchRegisterActivity(String aString){
-            if(aString.equals("0")){
+
+        protected void launchRegisterActivity(String aString) {
+            if (aString.equals("0")) {
                 startActivity(intent2);
-            }
-            else{
+            } else {
                 startActivity(intent);
             }
         }
     }
-    }
+}

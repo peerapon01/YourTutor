@@ -16,10 +16,10 @@ public class IntroActivity extends AppIntro {
 
         // Add your slide's fragments here.
         // AppIntro will automatically generate the dots indicator and buttons.
-        addSlide(AppIntroFragment.newInstance("YourTutor", "best application that's build for you",R.mipmap.ic_launcher,Color.parseColor("#3F51B5")));
-        addSlide(AppIntroFragment.newInstance("YourTutor", "best application that's build for you",R.mipmap.ic_launcher,Color.parseColor("#3F51B5")));
-        addSlide(AppIntroFragment.newInstance("YourTutor", "best application that's build for you",R.mipmap.ic_launcher,Color.parseColor("#3F51B5")));
-        addSlide(AppIntroFragment.newInstance("YourTutor", "best application that's build for you",R.mipmap.ic_launcher,Color.parseColor("#3F51B5")));
+        addSlide(AppIntroFragment.newInstance("YourTutor", "best application that's build for you", R.mipmap.ic_launcher, Color.parseColor("#3F51B5")));
+        addSlide(AppIntroFragment.newInstance("YourTutor", "best application that's build for you", R.mipmap.ic_launcher, Color.parseColor("#3F51B5")));
+        addSlide(AppIntroFragment.newInstance("YourTutor", "best application that's build for you", R.mipmap.ic_launcher, Color.parseColor("#3F51B5")));
+        addSlide(AppIntroFragment.newInstance("YourTutor", "best application that's build for you", R.mipmap.ic_launcher, Color.parseColor("#3F51B5")));
 
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
@@ -48,7 +48,7 @@ public class IntroActivity extends AppIntro {
     @Override
     public void onDonePressed() {
 
-        Intent send = new Intent(this.getApplicationContext(),LogInActivity.class);
+        Intent send = new Intent(this.getApplicationContext(), LogInActivity.class);
         this.startActivity(send);
         finish();
         // Do something when users tap on Done button.

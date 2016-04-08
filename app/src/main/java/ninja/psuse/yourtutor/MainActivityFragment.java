@@ -65,7 +65,7 @@ public class MainActivityFragment extends Fragment {
      * @return A new instance of fragment MainActivityFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static MainActivityFragment newInstance(String param1,String param2) {
+    public static MainActivityFragment newInstance(String param1, String param2) {
         MainActivityFragment fragment = new MainActivityFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
@@ -84,8 +84,8 @@ public class MainActivityFragment extends Fragment {
 
     }
 
-    private static final String[] COUNTRIES = new String[] {
-            "ป1","ป2","ป3","ป4","มัธยม","มหาลัย"
+    private static final String[] COUNTRIES = new String[]{
+            "ป1", "ป2", "ป3", "ป4", "มัธยม", "มหาลัย"
     };
 
 
@@ -111,20 +111,21 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 CourseInfo courseInfo = new CourseInfo();
-                courseInfo.category=category.getText().toString();
-                courseInfo.level=level.getText().toString();
-                courseInfo.priceperHr=priceperHr.getText().toString();
+                courseInfo.category = category.getText().toString();
+                courseInfo.level = level.getText().toString();
+                courseInfo.priceperHr = priceperHr.getText().toString();
                 ResultedCourseAsyncTask resultedCourseAsyncTask = new ResultedCourseAsyncTask();
                 resultedCourseAsyncTask.execute(courseInfo);
             }
         });
         return view;
     }
-    private static final String[] LEVEL = new String[] {
-            "ไม่ระบุ","ป1","ป2","ป3","ป4","ป5","ป6","ม1","ม2","ม3","ม4","ม5","ม6","มหาวิทยาลัย"
+
+    private static final String[] LEVEL = new String[]{
+            "ไม่ระบุ", "ป1", "ป2", "ป3", "ป4", "ป5", "ป6", "ม1", "ม2", "ม3", "ม4", "ม5", "ม6", "มหาวิทยาลัย"
     };
-    private static final String[] CATEGORY = new String[] {
-            "ไม่ระบุ","คณิตศาสตร์","วิทยาศาสตร์ทั่วไป","ฟิสิกส์","เคมี","ชีวะ","ภาษาอังกฤษ","ภาษาไทย","สังคม","อื่นๆ"
+    private static final String[] CATEGORY = new String[]{
+            "ไม่ระบุ", "คณิตศาสตร์", "วิทยาศาสตร์ทั่วไป", "ฟิสิกส์", "เคมี", "ชีวะ", "ภาษาอังกฤษ", "ภาษาไทย", "สังคม", "อื่นๆ"
     };
     /*// TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -164,7 +165,8 @@ public class MainActivityFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    public class ResultedCourseAsyncTask extends AsyncTask<CourseInfo,Void,JSONArray> {
+
+    public class ResultedCourseAsyncTask extends AsyncTask<CourseInfo, Void, JSONArray> {
         String category;
         String author;
         String subject;
@@ -175,8 +177,9 @@ public class MainActivityFragment extends Fragment {
         String description;
         String status;
 
-        public  final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
+
         protected void onPreExecute() {
             super.onPreExecute();
         }
@@ -186,55 +189,54 @@ public class MainActivityFragment extends Fragment {
         protected JSONArray doInBackground(CourseInfo... params) {
             try {
                 CourseInfo courseInfo = params[0];
-                String url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                String url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
                 //nnn
-                if(courseInfo.level.equals("ไม่ระบุ")&&courseInfo.category.equals("ไม่ระบุ")&&courseInfo.priceperHr.equals("")){
-                    url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                if (courseInfo.level.equals("ไม่ระบุ") && courseInfo.category.equals("ไม่ระบุ") && courseInfo.priceperHr.equals("")) {
+                    url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
                 }
                 ///nny
-                else if(courseInfo.level.equals("ไม่ระบุ")&&courseInfo.category.equals("ไม่ระบุ")&&!courseInfo.priceperHr.equals("")){
-                    url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={\"priceperHr\":{$gte:\""+courseInfo.priceperHr+"\"}}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                else if (courseInfo.level.equals("ไม่ระบุ") && courseInfo.category.equals("ไม่ระบุ") && !courseInfo.priceperHr.equals("")) {
+                    url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={\"priceperHr\":{$gte:\"" + courseInfo.priceperHr + "\"}}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
 
                 }
                 //nyn
-                else if(courseInfo.level.equals("ไม่ระบุ")&&!courseInfo.category.equals("ไม่ระบุ")&&courseInfo.priceperHr.equals("")){
-                    url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={\"category\":\""+courseInfo.category+"\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                else if (courseInfo.level.equals("ไม่ระบุ") && !courseInfo.category.equals("ไม่ระบุ") && courseInfo.priceperHr.equals("")) {
+                    url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={\"category\":\"" + courseInfo.category + "\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
                 }
                 //nyy
-                else if(courseInfo.level.equals("ไม่ระบุ")&&!courseInfo.category.equals("ไม่ระบุ")&&!courseInfo.priceperHr.equals("")){
-                    url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{\"category\":\""+courseInfo.category+"\"},{\"priceperHr\":{$gte:\""+courseInfo.priceperHr+"\"}}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                else if (courseInfo.level.equals("ไม่ระบุ") && !courseInfo.category.equals("ไม่ระบุ") && !courseInfo.priceperHr.equals("")) {
+                    url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{\"category\":\"" + courseInfo.category + "\"},{\"priceperHr\":{$gte:\"" + courseInfo.priceperHr + "\"}}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
 
-                }
-                else if(!courseInfo.level.equals("ไม่ระบุ")&&courseInfo.category.equals("ไม่ระบุ")&&courseInfo.priceperHr.equals("")){
-                    url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={\"level\":\""+courseInfo.level+"\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                } else if (!courseInfo.level.equals("ไม่ระบุ") && courseInfo.category.equals("ไม่ระบุ") && courseInfo.priceperHr.equals("")) {
+                    url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={\"level\":\"" + courseInfo.level + "\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
 
                 }
                 //https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{"level":"ม3"},{"category":"คณิตศาสตร์"}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR
                 //yny
-                else if(!courseInfo.level.equals("ไม่ระบุ")&&courseInfo.category.equals("ไม่ระบุ")&&!courseInfo.priceperHr.equals("")){
-                    url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{\"level\":\""+courseInfo.level+"\"},{\"priceperHr\":{$gte:\""+courseInfo.priceperHr+"\"}}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                else if (!courseInfo.level.equals("ไม่ระบุ") && courseInfo.category.equals("ไม่ระบุ") && !courseInfo.priceperHr.equals("")) {
+                    url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{\"level\":\"" + courseInfo.level + "\"},{\"priceperHr\":{$gte:\"" + courseInfo.priceperHr + "\"}}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
                 }
                 //yyn
-                else if(!courseInfo.level.equals("ไม่ระบุ")&&!courseInfo.category.equals("ไม่ระบุ")&&courseInfo.priceperHr.equals("")){
-                    url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{\"level\":\""+courseInfo.level+"\"},{\"category\":\""+courseInfo.category+"\"}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                else if (!courseInfo.level.equals("ไม่ระบุ") && !courseInfo.category.equals("ไม่ระบุ") && courseInfo.priceperHr.equals("")) {
+                    url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{\"level\":\"" + courseInfo.level + "\"},{\"category\":\"" + courseInfo.category + "\"}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
                 }
                 //yyy
-                else if(!courseInfo.level.equals("ไม่ระบุ")&&!courseInfo.category.equals("ไม่ระบุ")&&!courseInfo.priceperHr.equals("")){
-                    url="https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{\"level\":\""+courseInfo.level+"\"},{\"priceperHr\":{$gte:\""+courseInfo.priceperHr+"\"}}{\"category\":\"\""+courseInfo.category+"}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
+                else if (!courseInfo.level.equals("ไม่ระบุ") && !courseInfo.category.equals("ไม่ระบุ") && !courseInfo.priceperHr.equals("")) {
+                    url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={$and:[{\"level\":\"" + courseInfo.level + "\"},{\"priceperHr\":{$gte:\"" + courseInfo.priceperHr + "\"}}{\"category\":\"\"" + courseInfo.category + "}]}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
                 }
 
 
                 Request request = new Request.Builder()
                         .url(url)
                         .build();
-                Log.v("urltestcourse",url);
+                Log.v("urltestcourse", url);
                 Response response = client.newCall(request).execute();
                 String info = response.body().string();
-                Log.v("accountinfo",info);
+                Log.v("accountinfo", info);
                 JSONArray jsonInfo = new JSONArray(info);
 
 
-                for(int i=0;i<jsonInfo.length();i++) {
+                for (int i = 0; i < jsonInfo.length(); i++) {
                     JSONObject jsonObject = jsonInfo.getJSONObject(i);
                     category = jsonObject.getString("category");
                     author = jsonObject.getString("author");
@@ -245,14 +247,12 @@ public class MainActivityFragment extends Fragment {
                     description = jsonObject.getString("description");
                     status = jsonObject.getString("status");
                     priceperHr = jsonObject.getString("priceperHr");
-                    Log.v("subject",subject);
+                    Log.v("subject", subject);
                 }
                 return jsonInfo;
-            }
-            catch (JSONException e){
-                Log.e("ErrorJSON",e.getMessage());
-            }
-            catch (IOException e) {
+            } catch (JSONException e) {
+                Log.e("ErrorJSON", e.getMessage());
+            } catch (IOException e) {
                 Log.e("ErrorIO", e.toString());
             }
             return null;
@@ -263,7 +263,7 @@ public class MainActivityFragment extends Fragment {
         protected void onPostExecute(JSONArray jsonInfo) {
             super.onPostExecute(jsonInfo);
             getFragmentManager().beginTransaction()
-                    .replace(R.id.contentContainer,ResultCourseFragment.newInstance(jsonInfo,mParam2))
+                    .replace(R.id.contentContainer, ResultCourseFragment.newInstance(jsonInfo, mParam2))
                     .commit();
 
         }

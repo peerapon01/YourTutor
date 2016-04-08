@@ -66,12 +66,12 @@ public class ResultCourseFragment extends Fragment {
      * @return A new instance of fragment ResultCourseFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ResultCourseFragment newInstance(JSONArray param1,String param2) {
+    public static ResultCourseFragment newInstance(JSONArray param1, String param2) {
         ResultCourseFragment fragment = new ResultCourseFragment();
         Bundle args = new Bundle();
         String json1 = param1.toString();
-      args.putString(ARG_PARAM1,json1);
-        args.putString(ARG_PARAM2,param2);
+        args.putString(ARG_PARAM1, json1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,7 +89,7 @@ public class ResultCourseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =inflater.inflate(R.layout.fragment_result_course, container, false);
+        View view = inflater.inflate(R.layout.fragment_result_course, container, false);
         MaterialListView mListView = (MaterialListView) view.findViewById(R.id.material_listview);
         try {
             JSONArray jsonInfo = new JSONArray(mParam1);
@@ -111,7 +111,7 @@ public class ResultCourseFragment extends Fragment {
                         .setLayout(R.layout.material_basic_image_buttons_card_layout)
                         .setTitle(subject)
                         .setTitleGravity(Gravity.END)
-                        .setDescription(author+" "+description+" "+level+" "+location +" "+ school +" " + status+ " " + priceperHr)
+                        .setDescription(author + " " + description + " " + level + " " + location + " " + school + " " + status + " " + priceperHr)
                         .setDescriptionGravity(Gravity.END)
                         .setDrawable(R.drawable.ic_account_circle_white_24dp)
                         .setDrawableConfiguration(new CardProvider.OnImageConfigListener() {
@@ -148,9 +148,8 @@ public class ResultCourseFragment extends Fragment {
                 mListView.getAdapter().add(card);
             }
 
-        }
-        catch (JSONException    e){
-            Log.e("ErrorJSon",e.getMessage());
+        } catch (JSONException e) {
+            Log.e("ErrorJSon", e.getMessage());
         }
 
         return view;

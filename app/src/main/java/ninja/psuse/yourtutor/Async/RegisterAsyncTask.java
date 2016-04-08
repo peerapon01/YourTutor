@@ -14,7 +14,7 @@ import okhttp3.Response;
 /**
  * Created by peerapon01 on 4/7/16 AD.
  */
-public class RegisterAsyncTask extends AsyncTask <RegisterInfo,Void,Boolean> {
+public class RegisterAsyncTask extends AsyncTask<RegisterInfo, Void, Boolean> {
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
     OkHttpClient client = new OkHttpClient();
@@ -22,13 +22,10 @@ public class RegisterAsyncTask extends AsyncTask <RegisterInfo,Void,Boolean> {
 
     protected Boolean doInBackground(RegisterInfo... arg0) {
 
-        try
-        {
+        try {
             QueryBuilder qb = new QueryBuilder();
             RegisterInfo contact = arg0[0];
             String json = qb.createRegisterInfo(contact);
-
-
             RequestBody body = RequestBody.create(JSON, json);
             Request request = new Request.Builder()
                     .url("https://api.mlab.com/api/1/databases/yourtutor/collections/users?apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR")
@@ -36,13 +33,10 @@ public class RegisterAsyncTask extends AsyncTask <RegisterInfo,Void,Boolean> {
                     .build();
             Response response = client.newCall(request).execute();
 
-            if(response.isSuccessful())
-            {
-                Log.v("Successsend","body");
+            if (response.isSuccessful()) {
+                Log.v("Successsend", "body");
                 return true;
-            }
-            else
-            {
+            } else {
                 return false;
             }
         } catch (Exception e) {
