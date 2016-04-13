@@ -31,6 +31,7 @@ public class ResultedCourseAsyncTask extends AsyncTask<CourseInfo, Void, Void> {
     String priceperHr;
     String description;
     String status;
+    String courseID;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     OkHttpClient client = new OkHttpClient();
@@ -93,6 +94,9 @@ public class ResultedCourseAsyncTask extends AsyncTask<CourseInfo, Void, Void> {
 
             for (int i = 0; i < jsonInfo.length(); i++) {
                 JSONObject jsonObject = jsonInfo.getJSONObject(i);
+                JSONObject courseIDOuter = jsonObject.getJSONObject("_id");
+                courseID = courseIDOuter.getString("$oid");
+
                 category = jsonObject.getString("category");
                 author = jsonObject.getString("author");
                 subject = jsonObject.getString("subject");

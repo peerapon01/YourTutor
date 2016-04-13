@@ -40,6 +40,9 @@ public class QueryBuilder {
                         course.category, course.author, course.reservedBy, course.subject, course.level, course.location, course.school, course.priceperHr,
                         course.description, course.status, course.authorfacebookID);
     }
+    public String changeStatusInfo(String facebookID){
+        return String.format("{\"$set\":{\"reservedBy\":\""+facebookID+"\",\"status\":\"reserved\"}}");
+    }
 
 
 }

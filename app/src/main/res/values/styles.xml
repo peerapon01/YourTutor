@@ -7,6 +7,7 @@
     </style> -->
     <style name="MyTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/MyActionBar</item>
+        <item name="android:windowActionBar">false</item>
     </style>
     <style name="FabStyle">
         <item name="android:layout_width">wrap_content</item>
@@ -20,6 +21,7 @@
     </style>
 
     <style name="MyActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:windowActionBar">false</item>
         <item name="android:background">#FFA732</item>
         <item name="android:actionBarSize">16dp</item>
     </style>

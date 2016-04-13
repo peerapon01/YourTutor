@@ -3,16 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/bottomBarItemOne"
-        android:icon="@drawable/ic_class_white_24dp"
+        android:icon="@drawable/ic_school_white_24dp"
         android:title="Find" />
     <item
         android:id="@+id/bottomBarItemTwo"
         android:icon="@drawable/ic_near_me_white_24dp"
-        android:title="Nearby" />
+        android:title="My Course" />
     <item
         android:id="@+id/bottomBarItemThree"
         android:icon="@drawable/ic_school_white_24dp"
-        android:title="Student" />
+        android:title="Classify" />
     <item
         android:id="@+id/bottomBarItemFour"
         android:icon="@drawable/ic_account_circle_white_24dp"

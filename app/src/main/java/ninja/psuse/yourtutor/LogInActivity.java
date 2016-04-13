@@ -218,7 +218,8 @@ public class LogInActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        moveTaskToBack(true);
+        super.onBackPressed();
+
     }
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");

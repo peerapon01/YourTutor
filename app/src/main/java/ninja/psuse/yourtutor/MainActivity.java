@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.roughike.bottombar.BottomBar;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         Bundle b = getIntent().getExtras();
         displayPic = b.getString("displayPic");
         facebookId = b.getString("facebookId");
@@ -41,8 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 if (resId == R.id.bottomBarItemTwo) {
-                    mBottomBar.selectTabAtPosition(0,true);
-                    startActivity(intent);
+                    getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.contentContainer,MyCourse.newInstance(facebookId,facebookName))
+                            .commit();
 
 
 
@@ -75,9 +78,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         moveTaskToBack(true);
-
     }
 
     protected void onSaveInstanceState(Bundle outState) {

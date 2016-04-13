@@ -23,6 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import ninja.psuse.yourtutor.Async.ChangeCourseStatusAsyncTask;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +47,8 @@ public class ResultCourseFragment extends Fragment {
     String priceperHr;
     String description;
     String status;
+    ArrayList<String> courseID=new ArrayList<String>();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -90,11 +97,14 @@ public class ResultCourseFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_result_course, container, false);
-        MaterialListView mListView = (MaterialListView) view.findViewById(R.id.material_listview);
+
+        final MaterialListView mListView = (MaterialListView) view.findViewById(R.id.material_listview);
         try {
             JSONArray jsonInfo = new JSONArray(mParam1);
             for (int i = 0; i < jsonInfo.length(); i++) {
                 JSONObject jsonObject = jsonInfo.getJSONObject(i);
+                JSONObject courseIDOuter = jsonObject.getJSONObject("_id");
+                courseID.add(courseIDOuter.getString("$oid"));
                 category = jsonObject.getString("category");
                 author = jsonObject.getString("author");
                 subject = jsonObject.getString("subject");
@@ -107,10 +117,10 @@ public class ResultCourseFragment extends Fragment {
                 Log.v("subject", subject);
                 Card card = new Card.Builder(getActivity())
                         .withProvider(new CardProvider())
-
                         .setLayout(R.layout.material_basic_image_buttons_card_layout)
                         .setTitle(subject)
                         .setTitleGravity(Gravity.END)
+
                         .setDescription(author + " " + description + " " + level + " " + location + " " + school + " " + status + " " + priceperHr)
                         .setDescriptionGravity(Gravity.END)
                         .setDrawable(R.drawable.ic_account_circle_white_24dp)
@@ -129,7 +139,9 @@ public class ResultCourseFragment extends Fragment {
                                     public void onActionClicked(View view, Card card) {
                                         card.setDismissible(true);
                                         Toast.makeText(getActivity(), "You have pressed the left button", Toast.LENGTH_SHORT).show();
-                                        card.dismiss();
+                                        mListView.getAdapter().clear();
+                                        //card.dismiss();
+
 
                                     }
                                 }))
@@ -139,14 +151,27 @@ public class ResultCourseFragment extends Fragment {
                                 .setListener(new OnActionClickListener() {
                                     @Override
                                     public void onActionClicked(View view, Card card) {
-                                        Toast.makeText(getActivity(), "You have pressed the right button on card " + card.getProvider().getTitle(), Toast.LENGTH_SHORT).show();
-                                        card.dismiss();
+                                        card.setDismissible(true);
+                                        Toast.makeText(getActivity(), "You have pressed the right button on card " + courseID.get(mListView.getAdapter().getPosition(card)), Toast.LENGTH_SHORT).show();
+                                        ArrayList<String> things = new ArrayList<String>();
+                                        things.add(mParam2);
+                                        things.add((String) card.getTag());
+                                        ChangeCourseStatusAsyncTask changeCourseStatusAsyncTask = new ChangeCourseStatusAsyncTask();
+                                        changeCourseStatusAsyncTask.execute(things);
+                                        mListView.getAdapter().clear();
+                                       // card.dismiss();
                                     }
                                 }))
                         .endConfig()
+                        .setTag(courseIDOuter.getString("$oid"))
                         .build();
-                mListView.getAdapter().add(card);
+
+                mListView.getAdapter().addAtStart(card);
+
+
             }
+            mListView.getAdapter().notifyDataSetChanged();
+
 
         } catch (JSONException e) {
             Log.e("ErrorJSon", e.getMessage());
@@ -193,4 +218,5 @@ public class ResultCourseFragment extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }
