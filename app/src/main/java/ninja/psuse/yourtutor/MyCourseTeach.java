@@ -1,6 +1,7 @@
 package ninja.psuse.yourtutor;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,10 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListAdapter;
+import com.afollestad.materialdialogs.simplelist.MaterialSimpleListItem;
 import com.dexafree.materialList.card.Card;
 import com.dexafree.materialList.card.CardProvider;
 import com.dexafree.materialList.card.OnActionClickListener;
 import com.dexafree.materialList.card.action.TextViewAction;
+import com.dexafree.materialList.listeners.RecyclerItemClickListener;
 import com.dexafree.materialList.view.MaterialListView;
 import com.squareup.picasso.RequestCreator;
 
@@ -42,6 +47,15 @@ import okhttp3.Response;
  * create an instance of this fragment.
  */
 public class MyCourseTeach extends Fragment {
+    String firstname;
+    String lastname;
+    String mobilenum;
+    String email;
+    String lineid;
+    String facebookName;
+    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    OkHttpClient client = new OkHttpClient();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -136,7 +150,8 @@ public class MyCourseTeach extends Fragment {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
-    public class MyCourseTeachAsync extends AsyncTask<String,Void,JSONArray> {
+
+    public class MyCourseTeachAsync extends AsyncTask<String, Void, JSONArray> {
         String category;
         String author;
         String subject;
@@ -147,7 +162,8 @@ public class MyCourseTeach extends Fragment {
         String description;
         String status;
         String id;
-        public  final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+        String authorfacebookID;
+        public final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         OkHttpClient client = new OkHttpClient();
 
         @Override
@@ -176,15 +192,20 @@ public class MyCourseTeach extends Fragment {
                     school = jsonObject.getString("school");
                     description = jsonObject.getString("description");
                     status = jsonObject.getString("status");
+                    authorfacebookID = jsonObject.getString("facebookID");
                     priceperHr = jsonObject.getString("priceperHr");
+                    ArrayList<String> idAndauthorID = new ArrayList<String>();
+                    idAndauthorID.add(courseIDOuter.getString("$oid"));
+                    idAndauthorID.add(authorfacebookID);
                     Card card = new Card.Builder(getActivity())
                             .withProvider(new CardProvider())
                             .setLayout(R.layout.material_basic_image_buttons_card_layout)
                             .setTitle(subject)
                             .setTitleGravity(Gravity.END)
 
-                            .setDescription(author + " " + description + " " + level + " " + location + " " + school + " " + status + " " + priceperHr)
-                            .setDescriptionGravity(Gravity.END)
+                            .setDescription("ประกาศโดย : " + author + "\n " + "รายละเอียด : " + description + " \n" + "ระดับชั้น : " + level + "\n " + "สถานที่สอน : " + location + "\n " + "สถานศึกษา : " + school + "\n" + "สถานะ : " + status + "\n " + "ราคาต่อชั่วโมง : " +
+                                    priceperHr)
+                            .setDescriptionGravity(Gravity.START)
                             .setDrawable(R.drawable.ic_account_circle_white_24dp)
                             .setDrawableConfiguration(new CardProvider.OnImageConfigListener() {
                                 @Override
@@ -217,7 +238,9 @@ public class MyCourseTeach extends Fragment {
                                             Toast.makeText(getActivity(), "You have pressed the right button on card " + id, Toast.LENGTH_SHORT).show();
                                             ArrayList<String> things = new ArrayList<String>();
                                             things.add(mParam2);
-                                            things.add((String) card.getTag());
+                                            ArrayList<String> forGet = (ArrayList<String>) card.getTag();
+
+                                            things.add(forGet.get(0));
                                             //  ChangeCourseStatusAsyncTask changeCourseStatusAsyncTask = new ChangeCourseStatusAsyncTask();
                                             //changeCourseStatusAsyncTask.execute(things);
                                             //mListView.getAdapter().clear();
@@ -225,14 +248,33 @@ public class MyCourseTeach extends Fragment {
                                         }
                                     }))
                             .endConfig()
-                            .setTag(courseIDOuter.getString("$oid"))
+                            .setTag(idAndauthorID)
                             .build();
 
                     mListView.getAdapter().addAtStart(card);
                 }
+                mListView.addOnItemTouchListener(new RecyclerItemClickListener.OnItemClickListener() {
+
+                    @Override
+                    public void onItemClick(Card card, int position) {
+                        Log.d("CARD_TYPE", "test");
+                        ArrayList<String> forGet = (ArrayList<String>) card.getTag();
+                        String authorfbID = forGet.get(1);
+                        getAccountInfoDialog getAccountInfoDialog = new getAccountInfoDialog();
+                        getAccountInfoDialog.execute(authorfbID);
+
+                    }
+
+                    @Override
+                    public void onItemLongClick(Card card, int position) {
+                        ArrayList<String> forGet = (ArrayList<String>) card.getTag();
+                        Log.d("LONG_CLICK", card.getTag().toString());
+                        String authorfbID = forGet.get(1);
+                    }
+                });
+
                 progressWheel.setVisibility(View.INVISIBLE);
-            }
-            catch (JSONException e){
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
@@ -242,7 +284,7 @@ public class MyCourseTeach extends Fragment {
             try {
                 String facebookId = params[0];
                 String url = "https://api.mlab.com/api/1/databases/yourtutor/collections/courses?q={\"reservedBy\":\"" + facebookId + "\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR";
-                Log.v("urlclassify",url);
+                Log.v("urlclassify", url);
                 Request request = new Request.Builder()
                         .url(url)
                         .build();
@@ -260,6 +302,99 @@ public class MyCourseTeach extends Fragment {
             return null;
         }
 
+    }
+
+    public class getAccountInfoDialog extends AsyncTask<String,Void,Void> {
+
+
+
+        @Override
+
+        protected Void doInBackground(String... params) {
+            try {
+                String facebookId = params[0];
+                Request request = new Request.Builder()
+                        .url("https://api.mlab.com/api/1/databases/yourtutor/collections/users?q={\"facebookid\":\"" + facebookId + "\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR")
+                        .build();
+                Log.v("urltest", "https://api.mlab.com/api/1/databases/yourtutor/collections/users?q={\"facebookid\":\"" + facebookId + "\"}&apiKey=HXLkpE-1gKRhr8kYsje_fLtdLva5DSkR");
+                Response response = client.newCall(request).execute();
+                String info = response.body().string();
+                Log.v("accountinfo",info);
+                JSONArray jsonInfo = new JSONArray(info);
+
+
+                for(int i=0;i<jsonInfo.length();i++) {
+                    JSONObject jsonObject = jsonInfo.getJSONObject(i);
+                    firstname = jsonObject.getString("first_name");
+                    lastname = jsonObject.getString("last_name");
+                    email = jsonObject.getString("email");
+                    mobilenum = jsonObject.getString("phone");
+                    lineid = jsonObject.getString("lineid");
+                    facebookName = jsonObject.getString("facebookname");
+                }
+
+
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+
+            }
+
+
+            catch (Exception e){
+                return null;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            Toast.makeText(getContext(),"Touch outside 2 time to dismiss this",Toast.LENGTH_SHORT).show();
+            final MaterialSimpleListAdapter adapter2 = new MaterialSimpleListAdapter(getContext());
+            adapter2.add(new MaterialSimpleListItem.Builder(getContext())
+                    .content(email)
+                    .icon(R.drawable.ic_email_black_24dp)
+                    .backgroundColor(Color.WHITE)
+                    .build());
+            adapter2.add(new MaterialSimpleListItem.Builder(getContext())
+                    .content(mobilenum)
+                    .icon(R.drawable.ic_account_circle_black_24dp)
+                    .backgroundColor(Color.WHITE)
+                    .build());
+
+            adapter2.add(new MaterialSimpleListItem.Builder(getContext())
+                    .content(lineid)
+                    .icon(R.drawable.line)
+                    .backgroundColor(Color.WHITE)
+                    .build());
+
+            adapter2.add(new MaterialSimpleListItem.Builder(getContext())
+                    .content(facebookName)
+                    .icon(R.drawable.facebook)
+                    .backgroundColor(Color.WHITE)
+                    .build());
+                          /*  adapter.add(new MaterialSimpleListItem.Builder(getActivity())
+                                    .content(R.string.add_account)
+                                    .icon(R.drawable.ic_content_add)
+                                    .iconPaddingDp(8)
+                                    .build());*/
+
+            new MaterialDialog.Builder(getContext())
+                    .title("ข้อมูลที่ติดต่อได้ของผู้เรียน")
+                    .adapter(adapter2, new MaterialDialog.ListCallback() {
+                        @Override
+                        public void onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+                            MaterialSimpleListItem item = adapter2.getItem(which);
+
+                            // TODO
+                        }
+                    })
+                    .show();
+
+        }
     }
 
 
@@ -293,5 +428,6 @@ public class MyCourseTeach extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
+
 
 }

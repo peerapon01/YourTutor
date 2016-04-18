@@ -48,7 +48,12 @@ public class AccountFragment extends Fragment {
     String mobilenum;
     String email;
     String lineid;
-    TextView accountInfo;
+    TextView nameTxt;
+    TextView facebookNameTxt;
+    TextView mobileNumberTxt;
+    TextView lineidTxt;
+    TextView emailTxt;
+    com.pnikosis.materialishprogress.ProgressWheel progressWheel;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -108,7 +113,13 @@ public class AccountFragment extends Fragment {
 
             }
         });
-        accountInfo = (TextView) view.findViewById(R.id.infoTest);
+
+        nameTxt = (TextView) view.findViewById(R.id.info_fist_last);
+        lineidTxt = (TextView) view.findViewById(R.id.info_lineid);
+        emailTxt = (TextView) view.findViewById(R.id.info_email);
+        mobileNumberTxt = (TextView) view.findViewById(R.id.info_mobilenum);
+        facebookNameTxt = (TextView) view.findViewById(R.id.info_fbName);
+        progressWheel = (com.pnikosis.materialishprogress.ProgressWheel) view.findViewById(R.id.progress_wheelAccount);
 
         getAccountInfo getAccountInfo = new getAccountInfo();
         getAccountInfo.execute(mParam2);
@@ -155,6 +166,13 @@ public class AccountFragment extends Fragment {
     }
     public class getAccountInfo extends AsyncTask<String,Void,Void> {
         @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressWheel.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+
         protected Void doInBackground(String... params) {
             try {
                 String facebookId = params[0];
@@ -196,7 +214,13 @@ for(int i=0;i<jsonInfo.length();i++) {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-            accountInfo.setText(firstname+lastname+facebookName+lineid+mobilenum+email);
+            progressWheel.setVisibility(View.GONE);
+           nameTxt.setText("Name : "+firstname+" "+lastname);
+            emailTxt.setText("Email : "+email);
+            lineidTxt.setText("Line ID : "+lineid);
+            facebookNameTxt.setText("Facebook Name : "+facebookName);
+            mobileNumberTxt.setText("Mobile No. : "+mobilenum);
+
         }
     }
 

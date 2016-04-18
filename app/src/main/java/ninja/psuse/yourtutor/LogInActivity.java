@@ -3,6 +3,8 @@ package ninja.psuse.yourtutor;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
@@ -70,6 +72,18 @@ public class LogInActivity extends ActionBarActivity {
         userDisplay = (TextView) this.findViewById(R.id.username);
         loginButton = (LoginButton) this.findViewById(R.id.login_button);
         videoView = (VideoView) this.findViewById(R.id.videoView);
+        Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
+                + R.raw.background_edit4);
+        videoView.setVideoPath("android.resource://" + getPackageName() + "/"
+                + R.raw.background_edit4);
+        videoView.start();
+        videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+            }
+        });
         loginButton.setReadPermissions(Arrays.asList("user_friends", "public_profile", "email"));
 
 
@@ -212,7 +226,7 @@ public class LogInActivity extends ActionBarActivity {
 
         } else {
             userDisplay.setText("Please Log In First");
-            Glide.with(this).load(R.mipmap.icon_test_login).into(userPic);
+            Glide.with(this).load(R.drawable.logo).into(userPic);
         }
     }
 

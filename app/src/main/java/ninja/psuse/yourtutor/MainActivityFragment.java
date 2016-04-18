@@ -1,11 +1,13 @@
 package ninja.psuse.yourtutor;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -41,6 +43,7 @@ import okhttp3.Response;
 public class MainActivityFragment extends Fragment {
     android.support.v7.widget.AppCompatEditText priceperHr;
     Button searchButton;
+    ProgressDialog pDialog;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -94,6 +97,9 @@ public class MainActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_main_activity, container, false);
+        pDialog = new ProgressDialog(getActivity());
+        pDialog.setCancelable(false);
+        pDialog.setCanceledOnTouchOutside(false);
         priceperHr = (android.support.v7.widget.AppCompatEditText) view.findViewById(R.id.findpriceper_hr);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_dropdown_item_1line, LEVEL);
@@ -182,6 +188,8 @@ public class MainActivityFragment extends Fragment {
 
         protected void onPreExecute() {
             super.onPreExecute();
+            pDialog.setMessage("Loading Data.. Please Wait.");
+            pDialog.show();
         }
 
         @Override
@@ -262,8 +270,10 @@ public class MainActivityFragment extends Fragment {
 
         protected void onPostExecute(JSONArray jsonInfo) {
             super.onPostExecute(jsonInfo);
+            pDialog.dismiss();
             getFragmentManager().beginTransaction()
                     .replace(R.id.contentContainer, ResultCourseFragment.newInstance(jsonInfo, mParam1))
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     .commit();
 
         }
