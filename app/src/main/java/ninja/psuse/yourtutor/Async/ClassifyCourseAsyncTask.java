@@ -2,6 +2,7 @@ package ninja.psuse.yourtutor.Async;
 
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import ninja.psuse.yourtutor.other.CourseInfo;
 import ninja.psuse.yourtutor.other.RegisterInfo;
@@ -19,6 +20,12 @@ public class ClassifyCourseAsyncTask extends AsyncTask<CourseInfo, Void, Boolean
 
     OkHttpClient client = new OkHttpClient();
 
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+
+    }
 
     protected Boolean doInBackground(CourseInfo... params) {
 

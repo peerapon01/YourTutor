@@ -119,6 +119,7 @@ public class CourseFragment extends Fragment {
                 ClassifyCourseAsyncTask classifyCourseAsyncTask = new ClassifyCourseAsyncTask();
                 classifyCourseAsyncTask.execute(courseInfo);
 
+
             }
         });
 
