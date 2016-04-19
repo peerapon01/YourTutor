@@ -197,6 +197,34 @@ public class MyCourseTeach extends Fragment {
                     ArrayList<String> idAndauthorID = new ArrayList<String>();
                     idAndauthorID.add(courseIDOuter.getString("$oid"));
                     idAndauthorID.add(authorfacebookID);
+                    int resIdForThumbnails = R.drawable.others;
+                    if(category.equals("ชีวะ")){
+                        resIdForThumbnails=R.drawable.biology;
+                    }
+                    else if(category.equals("เคมี")){
+                        resIdForThumbnails=R.drawable.chemistry;
+                    }
+                    else if(category.equals("ภาษาอังกฤษ")){
+                        resIdForThumbnails=R.drawable.english;
+                    }
+                    else if(category.equals("คณิตศาสตร์")){
+                        resIdForThumbnails=R.drawable.math;
+                    }
+                    else if(category.equals("ฟิสิกส์")){
+                        resIdForThumbnails=R.drawable.physics;
+                    }
+                    else if(category.equals("วิทยาศาสตร์ทั่วไป")){
+                        resIdForThumbnails=R.drawable.science;
+                    }
+                    else if(category.equals("สังคม")){
+                        resIdForThumbnails=R.drawable.social;
+                    }
+                    else if(category.equals("ภาษาไทย")){
+                        resIdForThumbnails=R.drawable.thai;
+                    }
+                    else{
+                        resIdForThumbnails=R.drawable.others;
+                    }
                     Card card = new Card.Builder(getActivity())
                             .withProvider(new CardProvider())
                             .setLayout(R.layout.material_basic_image_buttons_card_layout)
@@ -206,11 +234,12 @@ public class MyCourseTeach extends Fragment {
                             .setDescription("ประกาศโดย : " + author + "\n " + "รายละเอียด : " + description + " \n" + "ระดับชั้น : " + level + "\n " + "สถานที่สอน : " + location + "\n " + "สถานศึกษา : " + school + "\n" + "สถานะ : " + status + "\n " + "ราคาต่อชั่วโมง : " +
                                     priceperHr)
                             .setDescriptionGravity(Gravity.START)
-                            .setDrawable(R.drawable.ic_account_circle_white_24dp)
+                            .setDrawable(resIdForThumbnails)
                             .setDrawableConfiguration(new CardProvider.OnImageConfigListener() {
                                 @Override
                                 public void onImageConfigure(@NonNull RequestCreator requestCreator) {
-                                    requestCreator.fit();
+                                    requestCreator.resize(90,112);
+                                    requestCreator.centerInside();
                                 }
                             })
                           /*  .addAction(R.id.left_text_button, new TextViewAction(getActivity())
