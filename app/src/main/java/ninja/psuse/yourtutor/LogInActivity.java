@@ -73,9 +73,9 @@ public class LogInActivity extends ActionBarActivity {
         loginButton = (LoginButton) this.findViewById(R.id.login_button);
         videoView = (VideoView) this.findViewById(R.id.videoView);
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
-                + R.raw.background_edit4);
+                + R.raw.background_vid2);
         videoView.setVideoPath("android.resource://" + getPackageName() + "/"
-                + R.raw.background_edit4);
+                + R.raw.background_vid2);
         videoView.start();
         videoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 

@@ -13,7 +13,7 @@
         android:id="@+id/logo_part"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="36dp">
@@ -32,15 +32,19 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             android:scaleType="centerCrop"
             android:src="@drawable/logo" />
-            <TextView
+            >
+            <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="YourTutor"
-                android:textSize="36sp"
-                android:textColor="@color/white"
-                android:layout_gravity="center_horizontal|center"
-                android:textStyle="bold"/>
+                android:layout_gravity="center"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/activity_vertical_margin"
+                android:scaleType="fitCenter"
+                android:src="@drawable/icon_2" />
+
         </LinearLayout>
+
 
         <TextView
             android:id="@+id/username"

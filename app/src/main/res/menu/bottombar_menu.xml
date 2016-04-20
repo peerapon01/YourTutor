@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools">
     <item
         android:id="@+id/bottomBarItemOne"
-        android:icon="@drawable/ic_school_white_24dp"
+        android:icon="@drawable/ic_search_white_24dp"
         android:title="Find" />
     <item
         android:id="@+id/bottomBarItemTwo"
-        android:icon="@drawable/ic_near_me_white_24dp"
+        android:icon="@drawable/ic_class_white_24dp"
         android:title="My Course" />
     <item
         android:id="@+id/bottomBarItemThree"
